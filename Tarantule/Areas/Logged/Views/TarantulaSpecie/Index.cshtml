@@ -1,0 +1,113 @@
+﻿@using DataAccess.Model
+@model IList<TarantuleSpecie>
+           
+
+@{
+    ViewBag.Title = "Index";   
+}
+
+<div class="clearfix"></div>
+
+<div class="panel">
+    <div class="panel-body">
+        <h1 style="color:#333;font-family: Courier New, monospace;font-size: 32px;">Druhy sklípkanů</h1>
+        @using (Ajax.BeginForm("Search", new AjaxOptions() { UpdateTargetId = "dynamicContent", InsertionMode = InsertionMode.Replace }))
+        {
+            <form>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Vyhledat sklípkana" id="searchBox" name="phrase">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <br>
+        <a href="@Url.Action("Index", "TarantulaSpecie")" class="btn btn-primary pull-right btnMarginClass">Zobrazit celý seznam</a>
+        }
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Vyhledat podle země <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="@Url.Action("Country", "TarantulaSpecie", new { name = "Brazílie" })">Brazílie</a></li>
+                <li><a href="@Url.Action("Country", "TarantulaSpecie", new { name = "Austrálie" })">Austrálie</a></li>
+                <li><a href="@Url.Action("Country", "TarantulaSpecie", new {name = "Costa Rica"})">Costa Rica</a></li>
+                <li><a href="@Url.Action("Country", "TarantulaSpecie", new { name = "Indonesie" })">Indonesie</a></li>
+                <li><a href="@Url.Action("Country", "TarantulaSpecie", new { name = "Spojené Státy Americké" })">Spojené Státy Americké</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>Obrázek</th>
+            <th>Název</th>
+            <th>Více</th>
+            <th>Upravit</th>
+            <th>Smazat</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (TarantuleSpecie tar in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(tar.ImageName))
+                    {
+                        <img src="@Url.Content("~/uploads/tarantule/" + tar.ImageName)" />
+                    }
+                </td>
+                <td>@tar.Name</td>
+                <td>@Html.ActionLink("Více", "Detail", "TarantulaSpecie", new { id = tar.Id, zobrazPopis = true }, new { title = tar.Name })</td>
+                <td>@Html.ActionLink("Edit", "Edit", "TarantulaSpecie", new { id = tar.Id }, null)</td>
+                <td>@Html.ActionLink("Delete", "Delete", "TarantulaSpecie", new { id = tar.Id }, new { onclick = "return confirm('Přejete si smazat záznam " + tar.Name + "?');" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="btn-toolbar">
+    <a href="@Url.Action("Create", "TarantulaSpecie")" class="btn btn-primary pull-right">Vytvoření nového druhu sklípkana</a>
+</div>
+
+@if (ViewBag.Pages != null)
+{
+    <div class="text-center">
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.Pages; i++)
+        {
+            <li class="@(ViewBag.CurrentPage == i ? "active" : "")">               
+                @Ajax.ActionLink(i.ToString(), "Index", new { page = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+            </li>
+        }
+    </ul>
+        </div>
+}
+
+<script type="text/javascript">
+    $(function() {
+
+        $("#searchBox").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "@Url.Action("SearchTarantulaSpecies", "TarantulaSpecie")",
+                    dataType: "json",
+                    data: {
+                        query: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        });
+    });
+</script>
+
+
+

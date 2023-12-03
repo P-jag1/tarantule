@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+   
+
+    <title>Login</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/signin.css")" rel="stylesheet">  
+</head>
+
+<body>
+
+    <div class="container">
+
+        @using (Html.BeginForm("SignIn","Login", FormMethod.Post, new{@class="form-signin"}))
+        {
+            
+            <label for="inputLogin" class="sr-only">Login</label>
+            <input type="text" id="inputLogin" name="login" class="form-control" placeholder="Přihlašovací jméno">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Heslo">
+
+            if (TempData["error"] != null)
+            {
+                <div class="text-center"><p class="text-dark">@TempData["error"]</p></div>
+            }
+
+            <button class="btn btn-lg btn-success btn-block" type="submit">Přihlásit se</button>
+            <a class="btn btn-lg btn-success btn-block" href="@Url.Action("Index", "Registration", new { area = ""})" type="button">Registrace</a>
+            <a class="btn btn-lg btn-success btn-block" href="@Url.Action("Index", "Home", new { area = ""})" type="button">Home</a>
+            
+        } 
+            
+    </div> <!-- /container -->  
+        
+</body>
+</html>

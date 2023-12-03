@@ -1,0 +1,51 @@
+﻿@model DataAccess.Model.TarantuleOfUser
+@{
+    ViewBag.Title = "Create";
+}
+
+<h1 class="text-center" style="color:#333;font-family: Courier New, monospace;font-size: 32px;">Nový záznam</h1>
+
+@Html.ValidationSummary()
+
+@using (Html.BeginForm("Add", "TarantulaOfUser", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-3 control-label">Jméno sklípkana</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-3 control-label">Přezdívka sklípkana</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.Nickname, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Nickname)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-3 control-label">Obrázek</label>
+        <div class="col-sm-10">
+            <input type="file" name="picture" />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-3 control-label">Popis sklípkana</label>
+        <div class="col-sm-10">
+            @Html.TextAreaFor(x => x.Description, new { @class = "form-control formatedtext" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="submit" class="btn btn-primary">Vytvořit nový záznam</button>
+        </div>
+    </div>
+
+}
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+<script>tinymce.init({ selector: '.formatedtext' });</script>

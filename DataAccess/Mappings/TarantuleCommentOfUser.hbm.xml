@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DataAccess" namespace="DataAccess.Model">
+
+  <class name="TarantuleCommentOfUser" table="tarantule_of_user_comment">
+    <id name="Id" column="id">
+      <generator class="native" />
+    </id>
+    <property name="Name" column="name" />
+    <property name="Time" column="time" />
+    <property name="Description" column="comment" />
+
+    <many-to-one name="UserTar_id" column="of_user_id" foreign-key="of_user_id" />
+  </class>
+
+</hibernate-mapping>

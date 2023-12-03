@@ -1,0 +1,44 @@
+﻿@model DataAccess.Model.TarantuleSpecie
+@{
+    ViewBag.Title = "Detail";
+}
+
+    <div class="panel">
+        <div class="panel-body">
+            <h2 class="text-center" style="color:#333;font-family: Courier New, monospace;font-size: 32px;">@Model.Name</h2>
+            <p class="text-center">
+                @if (!string.IsNullOrEmpty(Model.ImageName))
+                {
+                    <img src="@Url.Content("~/uploads/tarantule/" + Model.ImageName)" />
+                }
+            </p>
+        </div>
+    </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Název</div>
+    <div class="panel-body">@Model.Name</div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Latinský název</div>
+    <div class="panel-body">@Model.LatinName</div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Země původu</div>
+    <div class="panel-body">@Model.Country</div>
+</div>
+
+<h1 style="color:#333;font-family: Courier New, monospace;font-size: 32px;">Bližší Informace</h1>
+<div class="well">
+    <p>
+        Průměrná Délka života: @Model.SpanOfLife let
+    </p>
+
+    <p>
+        Velikost: @Model.Size cm
+    </p>
+    <p>@Html.Raw(Model.Description)</p>
+</div>
+

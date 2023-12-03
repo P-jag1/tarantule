@@ -1,0 +1,45 @@
+﻿@model DataAccess.Model.TarantuleOfUser
+@{
+    ViewBag.Title = "Detail";
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <h2 class ="text-center" style="color:#333;font-family: Courier New, monospace;font-size: 32px;">@Model.Nickname</h2>
+        <p class="text-center">
+            @if (!string.IsNullOrEmpty(Model.ImageName))
+            {
+                <img src="@Url.Content("~/uploads/tarantule/" + Model.ImageName)" />
+            }
+        </p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Název</div>
+    <div class="panel-body">@Model.Name</div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Přezdívka</div>
+    <div class="panel-body">@Model.Nickname</div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Majitel</div>
+    <div class="panel-body">@Model.User_id.Name @Model.User_id.Surname</div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Kontakt na Majitele</div>
+    <div class="panel-body">E-mail: @Model.User_id.Email         Telefon: @Model.User_id.Telefon</div>
+</div>
+
+<h1 style="color:#333;font-family: Courier New, monospace;font-size: 32px;">Bližší Informace</h1>
+<div class="well">
+    <p>@Html.Raw(Model.Description)</p>
+</div>
+
+<div class="btn-toolbar">
+    <a href="@Url.Action("Index", "Login", new { area = "Logged"})" class="btn btn-primary pull-right">Vsoupit do Diskuze</a>
+</div>

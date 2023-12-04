@@ -15,3 +15,13 @@
 ## Zabezpečení
 
 - Aplikace má zabezpečení na úrovni uživatelských rolí, které je dosaženo pomocí autorizace jednotlivých procesů. Uživatelé mohou přistoupit pouze k tomu, na co mají oprávnění. Veškerá hesla jsou převedena do hash podoby před uložením do databáze. Vnější vstup má nastaveny podmínky pro to, aby mohl být přijat, a vkládá se pouze do určených míst pro vstup. NHibernate s využitím předpřipravených metod nám umožňuje bezpečný přístup k databázi.
+
+## Video
+
+- Login údaje: - jagos 1234 (admin)
+               - jakub 1234 (moderátor)
+               - nova 12345 (chovatel)
+
+
+
+

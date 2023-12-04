@@ -23,5 +23,12 @@
                - nova 12345 (chovatel)
 
 
+  
+
+https://github.com/P-jag1/tarantule/assets/73929822/e3bd921e-bd99-4728-9929-979671eec90a
+
+
+
+
 
 

@@ -1,0 +1,144 @@
+﻿@using DataAccess.Model
+@model IList<TarantuleUser>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="clearfix"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Detail uživatele</h4>
+            </div>
+            <div class="modal-body" id="modalContent">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-body">
+        <h1 style="color:#333;font-family: Courier New, monospace;font-size: 32px;">Seznam uživatelů</h1>
+        @using (Ajax.BeginForm("Search", new AjaxOptions() { UpdateTargetId = "dynamicContent", InsertionMode = InsertionMode.Replace }))
+        {
+            <form>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Vyhledat uživatele" id="searchBox" name="phrase">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                             <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                </div>
+            </form>
+            <br>
+            <a href="@Url.Action("Index", "TarantulaUsers")" class="btn btn-primary pull-right btnMarginClass">Zobrazit celý seznam</a>
+
+            if (ViewBag.Roles != null)
+            {
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Vyhledat podle práv <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (TarantuleRole bc in ViewBag.Roles)
+                        {
+                        <li><a href="@Url.Action("Role", "TarantulaUsers", new {id = bc.Id})">@bc.RoleDescription</a></li>
+                        }                       
+                    </ul>
+                </div>              
+             }
+            
+        }
+    </div>
+</div>
+
+
+<table class="table table-striped table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>Login</th>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>Práva</th>
+            <th>Detail</th>
+            <th>Upravit</th>
+            <th>Smazat</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (TarantuleUser tar in Model)
+        {
+            <tr>
+                <td>@tar.Login</td>
+                <td>@tar.Name</td>
+                <td>@tar.Surname</td>
+                <td>@tar.Role.RoleDescription</td>
+                <td>
+                    @Ajax.ActionLink("Detail", "Detail", new { id = tar.Id }, new AjaxOptions() { UpdateTargetId = "modalContent", InsertionMode = InsertionMode.Replace, OnBegin = "openModelWindow" })
+                </td>
+                <td>@Html.ActionLink("Edit", "Edit", "TarantulaUsers", new { id = tar.Id }, null)</td>
+                <td>@Html.ActionLink("Delete", "Delete", "TarantulaUsers", new { id = tar.Id }, new { onclick = "return confirm('Přejete si smazat uživatele " + tar.Name + "?');" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="btn-toolbar">
+    <a href="@Url.Action("Create", "TarantulaUsers")" class="btn btn-primary pull-right">Vytvoření nového uživatele</a>
+</div>
+
+@if (ViewBag.Pages != null)
+{
+    <div class="text-center">
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.Pages; i++)
+        {
+            <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
+                @Ajax.ActionLink(i.ToString(), "Index", new { page = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+            </li>
+        }
+    </ul>
+        </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#searchBox").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "@Url.Action("SearchUser", "TarantulaUsers")",
+                    dataType: "json",
+                    data: {
+                        query: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    function openModelWindow() {
+        $('#myModal').modal({
+            show: true
+        });
+    }
+
+</script>
